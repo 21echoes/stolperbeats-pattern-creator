@@ -1,30 +1,23 @@
 {
   "compilerOptions": {
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "outDir": "lib",
-    "target": "ES6", // Target environment. Most modern browsers support ES6, but you may want to set it to newer or older. (defaults to ES3)
-
-    // Module resolution
-    "esModuleInterop": true, // fixes some issues TS originally had with the ES6 spec where TypeScript treats CommonJS/AMD/UMD modules similar to ES6 module
-    "moduleResolution": "node", // Pretty much always node for modern JS. Other option is "classic"
-
-    // Strict Checks
-    "alwaysStrict": true, // Ensures that your files are parsed in the ECMAScript strict mode, and emit “use strict” for each source file.
-    "allowUnreachableCode": false, // pick up dead code paths
-    "noImplicitAny": true, // In some cases where no type annotations are present, TypeScript will fall back to a type of any for a variable when it cannot infer the type.
-    "strictNullChecks": true, // When strictNullChecks is true, null and undefined have their own distinct types and you’ll get a type error if you try to use them where a concrete value is expected.
-
-    // Linter Checks
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
