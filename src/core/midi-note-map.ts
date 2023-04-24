@@ -1,7 +1,8 @@
 import { Track, Tracks } from './track';
 
 // Edit this mapping as you see fit
-export const MidiNoteMap: Record<number, Track> = {
+export type MidiNoteMap = Record<number, Track>
+export const DefaultMidiNoteMap: MidiNoteMap = {
   35: Tracks.KICK, // "Acoustic Bass Drum",
   36: Tracks.KICK, // "Bass Drum 1",
   37: Tracks.PERC2, // "Side Stick",

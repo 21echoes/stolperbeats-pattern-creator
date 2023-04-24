@@ -3,7 +3,10 @@ import { convertMidiFilesToBank } from '@/core/midi-file-reader';
 import Head from 'next/head'
 import { FormEvent, useCallback, useState } from 'react'
 import arrayBufferToBuffer from 'arraybuffer-to-buffer'
+import NoteMapper from '@/components/NoteMapper';
 import FileSelector from '@/components/FileSelector';
+import { DefaultMidiNoteMap, MidiNoteMap } from '@/core/midi-note-map';
+import { Track } from '@/core/track';
 
 const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer|undefined)[]> =>
   Promise.all((new Array(BANK_NUM_PATTERNS).fill(0)).map((_, i) =>
@@ -30,20 +33,26 @@ const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer|u
     })
   ));
 
-const generateBankForForm = async (form: HTMLFormElement): Promise<Bank> => {
+const generateBankForForm = async (form: HTMLFormElement, midiNoteMap: MidiNoteMap): Promise<Bank> => {
   const buffers = await getBuffersFromFormFiles(form);
-  const bank = await convertMidiFilesToBank(buffers);
+  const bank = await convertMidiFilesToBank(buffers, midiNoteMap);
   return bank;
 }
 
 export default function Home() {
   const [bankString, setBankString] = useState('');
 
+  const [midiNoteMapEntries, setMidiNoteMapEntries] = useState(
+    Object.entries(DefaultMidiNoteMap)
+      .map(([midiNoteNumberStr, track]) => [parseInt(midiNoteNumberStr, 10), track] as [number, Track])
+  )
+
   const onSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const bank = await generateBankForForm(e.currentTarget);
+    const midiNoteMap = Object.fromEntries(midiNoteMapEntries);
+    const bank = await generateBankForForm(e.currentTarget, midiNoteMap);
     setBankString(bank.toString());
-  }, []);
+  }, [midiNoteMapEntries]);
 
   return (
     <>
@@ -54,6 +63,10 @@ export default function Home() {
         <form onSubmit={onSubmit}>
           MIDI files:
           <FileSelector />
+
+          <br/>
+          MIDI note mapping:
+          <NoteMapper midiNoteMapEntries={midiNoteMapEntries} setMidiNoteMapEntries={setMidiNoteMapEntries} />
 
           <br/>
           <button type="submit">Generate</button>

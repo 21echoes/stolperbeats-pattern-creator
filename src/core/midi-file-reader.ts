@@ -12,7 +12,7 @@ const getBeatForTime = (time: number, midiHeader: midiManager.MidiHeader): numbe
   throw new Error('Only MIDI files with ticksPerBeat format are supported currently');
 }
 
-export const convertMidiFileToPatterns = async (fileBuffer: Buffer): Promise<{ [K in Track]: Pattern }> => {
+export const convertMidiFileToPatterns = async (fileBuffer: Buffer, midiNoteMap: MidiNoteMap): Promise<{ [K in Track]: Pattern }> => {
   const midiData = midiManager.parseMidi(fileBuffer);
 
   const result = {
@@ -30,7 +30,7 @@ export const convertMidiFileToPatterns = async (fileBuffer: Buffer): Promise<{ [
       if (midiEvent.type !== 'noteOn') {
         continue;
       }
-      const track = MidiNoteMap[midiEvent.noteNumber];
+      const track = midiNoteMap[midiEvent.noteNumber];
       if (!track) {
         continue;
       }
@@ -44,8 +44,8 @@ export const convertMidiFileToPatterns = async (fileBuffer: Buffer): Promise<{ [
   return result;
 }
 
-export const convertMidiFilesToBank = async (fileBuffers: (Buffer|undefined)[]): Promise<Bank> => {
-  const patternsByTracks = await Promise.all(fileBuffers.map((buffer) => buffer ? convertMidiFileToPatterns(buffer) : undefined));
+export const convertMidiFilesToBank = async (fileBuffers: (Buffer|undefined)[], midiNoteMap: MidiNoteMap): Promise<Bank> => {
+  const patternsByTracks = await Promise.all(fileBuffers.map((buffer) => buffer ? convertMidiFileToPatterns(buffer, midiNoteMap) : undefined));
   const bankData = patternsByTracks.reduce((acc, patternsByTrack) => {
     if (!patternsByTrack) {
       acc[Tracks.KICK].push(new Pattern(Tracks.KICK, new Array(64).fill(0)));

@@ -5,7 +5,7 @@ const FileSelector: React.FC<{}> = () => {
     {(new Array(BANK_NUM_PATTERNS).fill(0)).map((_, index) => (
       <div key={index}>
         <label key={index}>
-          Pattern {index+1}: <input type="file" accept=".mid,.midi" />
+          Pattern {index}: <input type="file" accept=".mid,.midi" />
         </label>
       </div>
     ))}
