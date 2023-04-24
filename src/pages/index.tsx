@@ -9,11 +9,13 @@ import { DefaultMidiNoteMap, MidiNoteMap } from '@/core/midi-note-map';
 import { Track } from '@/core/track';
 import FileSaver from 'file-saver';
 
-const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer | undefined)[]> =>
-  Promise.all((new Array(BANK_NUM_PATTERNS).fill(0)).map((_, i) =>
+const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer | undefined)[]> => {
+  const inputs = (new Array(BANK_NUM_PATTERNS * 2).fill(0)).map((_, i) => {
+    const element = form[i];
+    return element.tagName === 'INPUT' ? element : null;
+  }).filter(Boolean) as HTMLInputElement[];
+  return Promise.all(inputs.map((input) =>
     new Promise<Buffer | undefined>((resolve) => {
-      const input = form[i] as HTMLInputElement;
-
       const file = input.files?.[0];
       if (!file) {
         resolve(undefined);
@@ -33,6 +35,8 @@ const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer |
       reader.readAsArrayBuffer(file);
     })
   ));
+}
+
 
 const generateBankForForm = async (form: HTMLFormElement, midiNoteMap: MidiNoteMap): Promise<Bank> => {
   const buffers = await getBuffersFromFormFiles(form);
