@@ -1,5 +1,5 @@
-import { Bank, BankData } from '@/bank';
-import { convertMidiFilesToBank } from '@/midi-file-reader';
+import { Bank } from '@/core/bank';
+import { convertMidiFilesToBank } from '@/core/midi-file-reader';
 import Head from 'next/head'
 import { FormEvent, useCallback, useState } from 'react'
 import arrayBufferToBuffer from 'arraybuffer-to-buffer'
