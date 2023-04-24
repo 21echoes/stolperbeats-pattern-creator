@@ -1,0 +1,1 @@
+export type Note = 0 | 1;

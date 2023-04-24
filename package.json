@@ -1,0 +1,13 @@
+{
+  "name": "stolperbeats-pattern-creator",
+  "scripts": {
+    "run": ""
+  },
+  "dependencies": {
+    "midi-file": "^1.2.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
