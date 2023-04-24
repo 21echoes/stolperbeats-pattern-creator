@@ -1,7 +1,7 @@
 import { Track, Tracks, getTrackName } from './track';
 import { Pattern } from './pattern';
 
-type BankData = {
+export type BankData = {
   [K in Track]: Pattern[];
 }
 
