@@ -16,14 +16,16 @@ const chunk = <T>(arr: T[], len: number): T[][] => {
   return chunks;
 }
 
+export const BANK_NUM_PATTERNS = 24;
+
 export class Bank {
   public data: BankData;
 
   constructor(data: BankData) {
     for (const track of (Object.keys(data) as Track[])) {
       const patterns = data[track];
-      if (patterns.length !== 24) {
-        throw new Error(`Bank initialized with only ${patterns.length} patterns for ${getTrackName(track)} (needs 24)`)
+      if (patterns.length !== BANK_NUM_PATTERNS) {
+        throw new Error(`Bank initialized with only ${patterns.length} patterns for ${getTrackName(track)} (needs ${BANK_NUM_PATTERNS})`)
       }
       for (const pattern of patterns) {
         if (pattern.track !== track) {

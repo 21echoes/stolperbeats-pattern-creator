@@ -1,13 +1,12 @@
-import { Bank } from '@/core/bank';
+import { BANK_NUM_PATTERNS, Bank } from '@/core/bank';
 import { convertMidiFilesToBank } from '@/core/midi-file-reader';
 import Head from 'next/head'
 import { FormEvent, useCallback, useState } from 'react'
 import arrayBufferToBuffer from 'arraybuffer-to-buffer'
-
-const NUM_PATTERNS = 24;
+import FileSelector from '@/components/FileSelector';
 
 const getBuffersFromFormFiles = async (form: HTMLFormElement): Promise<(Buffer|undefined)[]> =>
-  Promise.all((new Array(NUM_PATTERNS).fill(0)).map((_, i) =>
+  Promise.all((new Array(BANK_NUM_PATTERNS).fill(0)).map((_, i) =>
     new Promise<Buffer|undefined>((resolve) => {
       const input = form[i] as HTMLInputElement;
 
@@ -53,18 +52,13 @@ export default function Home() {
       </Head>
       <main>
         <form onSubmit={onSubmit}>
-          {(new Array(NUM_PATTERNS).fill(0)).map((_, index) => (
-            <>
-              <label key={index}>
-                Pattern {index+1}
-                <input type="file" accept=".mid,.midi" />
-              </label>
-              <br/>
-            </>
-          ))}
+          MIDI files:
+          <FileSelector />
+
+          <br/>
           <button type="submit">Generate</button>
         </form>
-        <br/>
+
         {bankString ? <pre>{bankString}</pre> : null}
       </main>
     </>

@@ -1,5 +1,5 @@
 import * as fs from 'fs/promises';
-import { Bank, BankData } from "../bank";
+import { BANK_NUM_PATTERNS, Bank, BankData } from "../bank";
 import { convertMidiFileToPatterns } from "../midi-file-reader";
 import { Track, Tracks } from "../track";
 
@@ -15,7 +15,7 @@ const main = async (filePath: string): Promise<Bank> => {
     [Tracks.PERC2]: [],
   }
 
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < BANK_NUM_PATTERNS; i++) {
     const parsed = await convertMidiFileToPatterns(fileBuffer);
     (Object.keys(parsed) as Track[]).sort().forEach((track) => {
       bankData[track].push(parsed[track])
