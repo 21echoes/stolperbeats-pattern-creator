@@ -1,9 +1,9 @@
 import * as fs from 'fs/promises';
-import { Tracks } from "../../core/track";
-import { Pattern } from "../../core/pattern";
-import { getPatternsAtCoordinates } from "..";
-import { BANK_NUM_PATTERNS, Bank, BankData } from "../../core/bank";
-import defaultBank from "../../core/stock-banks/bank000";
+import { Tracks } from "../core/track";
+import { Pattern } from "../core/pattern";
+import { getPatternsAtCoordinates } from "./index";
+import { BANK_NUM_PATTERNS, Bank, BankData } from "../core/bank";
+import defaultBank from "../core/stock-banks/bank000";
 
 const createBanks = (): Bank[] => {
   const startPoint = (255/(BANK_NUM_PATTERNS * 2));
@@ -40,7 +40,7 @@ const createBanks = (): Bank[] => {
 const writeBankFiles = async () => {
   const banks = createBanks();
   await Promise.all(banks.map(async (bank, index) => {
-    await fs.writeFile(`output/PatternBank${(index + 40).toString().padStart(3, '0')}.txt`, bank.toString())
+    await fs.writeFile(`output/xByY/PatternBank${(index + 40).toString().padStart(3, '0')}.txt`, bank.toString())
   }))
 }
 
