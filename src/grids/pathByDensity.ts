@@ -1,4 +1,3 @@
-import * as fs from 'fs/promises';
 import { Tracks } from "../core/track";
 import { Pattern } from "../core/pattern";
 import { getPatternsAtCoordinates } from "./index";
@@ -47,7 +46,7 @@ const eightByEightPath = [
   [1,7],[0,7],[1,6],[0,6],[0,5],[1,5],[1,4],[0,4],
 ]
 
-const createBanks = (gridSize: 7 | 8): Bank[] => {
+export const createBanks = (gridSize: 7 | 8): Bank[] => {
   const pathStartPoint = (255/(gridSize * 2));
   const pathStepSize = (255/gridSize);
   const densityStartPoint = (255/(BANK_NUM_PATTERNS * 2));
@@ -84,14 +83,3 @@ const createBanks = (gridSize: 7 | 8): Bank[] => {
     return new Bank(bankData);
   })
 }
-
-const writeBankFiles = async (gridSize: 7 | 8) => {
-  const banks = createBanks(gridSize);
-  await Promise.all(banks.map(async (bank, index) => {
-    const startIndex = 64 - banks.length;
-    await fs.writeFile(`output/pathByDensity/${gridSize}/PatternBank${(startIndex + index).toString().padStart(3, '0')}.txt`, bank.toString())
-  }))
-}
-
-writeBankFiles(7).then(() => console.log('done 7')).catch(console.error)
-writeBankFiles(8).then(() => console.log('done 8')).catch(console.error)
