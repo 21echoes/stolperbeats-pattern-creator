@@ -7,7 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "18.16.0",
+    "@types/node": "22.14.0",
     "@types/react": "18.0.38",
     "@types/react-dom": "18.0.11",
     "arraybuffer-to-buffer": "^0.0.7",
